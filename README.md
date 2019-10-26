@@ -1,5 +1,5 @@
 # **Linked-Dictionary**    
-##**Instructions:**    
+## **Instructions:**    
   3 commits from each member  
   Read a text file document line by line  
   Store each word in the correspondent place (alphabetical order)  
