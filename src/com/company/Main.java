@@ -59,8 +59,6 @@ public class Main {
             System.out.println(elapsedTime);
 
             Scanner scan = new Scanner(System.in);
-            int x = scan.nextInt();
-
             for (int j = 0;j<10;j++) {
                 x = scan.nextInt();
                 if (toPrint[x]== null){
