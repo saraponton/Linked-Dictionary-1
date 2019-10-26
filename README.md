@@ -2,7 +2,7 @@
 
 ## Objective
 - [x] Create a program that takes in a file of words and sort them through Linked Lists.
-### Structure - [x]
+- [x] ### Structure 
 This is supposed to be done as soon as you read the word, it is identified where to be stored and put into the dict automatically.
 We approached it with coming up with a linked list of linked lists with different letters of the alphabet so that it would faster the program, since it would only compare with words of the same first letter.
 Therefore we create the linked lists:
