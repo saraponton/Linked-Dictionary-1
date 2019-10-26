@@ -110,9 +110,20 @@ In order to grant access to the user through the console to type a number and re
 ![proof](https://cdn.discordapp.com/attachments/626181090884845569/637720649309356087/unknown.png)
 
 ## Improvements
-###
-At first we were working with a single linked list with 99 thousand values that would be checked before adding the last values since this was so slow that we didn't even end the program once, we decided to go from 
+### One Linked List
+At first we were working with a single linked list with 99 thousand values that would be checked before adding the last values since this was so slow that we didn't even end the program once.
 
+### Indexing with letters
+Secondly we managed to make the whole system faster by before the list starts to be populated we add all the letters from the alphabet so that it removes unecesary comparasions aout of the way. But the program was still slow at a whopping 38 mins to correctly sort all of the values.
+We thought that it was due to the structure of how the nodes store their value and the fact that each value records every single value before itself in the linked list. Therefore we came up with a way of reducing that.
+
+### Indexing with linked lists
+
+This is the best method we were able to come up with which was to create a linked list to every single letter that a word starts with. therefore everytime a word is sorted it not only bypasses being compared to every other word that doenst start with the same letter but the size of the linked list becomes smaller allowing for faster storing of data.
+
+
+#### Results
+Although our improvements were small, it allowed the program to run much faster at the minimum 26 mins.
 
 | One Linked List                   | 60 mins+  |
 |-----------------------------------|---|
