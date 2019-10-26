@@ -70,7 +70,7 @@ public class Main {
                 }
 
             }
-            scan.close()
+            scan.close();
 
 
         }
