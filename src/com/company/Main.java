@@ -60,12 +60,13 @@ public class Main {
 
             Scanner scan = new Scanner(System.in);
             for (int j = 0;j<10;j++) {
-                x = scan.nextInt();
-                if (toPrint[x]== null){
+                x = scan.nextLine();
+                if (toPrint[x] == null && toPrint.indexOf(x)){
                     System.out.println("-1");
-                }else {
+                }else if (x == (int)x){
                     System.out.println(toPrint[x]);
-                }
+                } else {
+                    toPrint.indexOf(x)
 
             }
             scan.close();
