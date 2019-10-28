@@ -1,5 +1,5 @@
 # Linked Dictionaries
-
+Project by Matheus Paro and Yuval Cole.
 ## Objective
 - [x] Create a program that takes in a file of words and sort them through Linked Lists.
 - [x] Create a new file with the sorted list.
