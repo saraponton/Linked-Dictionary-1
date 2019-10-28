@@ -68,20 +68,20 @@ public class Main {
                 } else {
                     toPrint.indexOf(x)
 
+                }
+                scan.close();
+
+
             }
-            scan.close();
-
-
-        }
         catch (FileNotFoundException | UnsupportedEncodingException e) {
-            e.printStackTrace();
+                e.printStackTrace();
+            }
+
+
+
         }
 
-
-
-    }
-
-    public static int getPosition(String word, int indicator) {
+        public static int getPosition(String word, int indicator) {
         String temp = Character.toString(word.charAt(0));
         int index = dict.get(indicator).indexOf(temp);
 
@@ -99,4 +99,4 @@ public class Main {
     }
 
 
-}
+    }
