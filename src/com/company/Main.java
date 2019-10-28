@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Main {
     static String alphabet="abcdefghijklmnopqrstuvwxyzé";
-    static String path = "/Users/Matheus/Linked/src/com/company/unsorteddict.txt";
+    static String path = "D:\\Workspace\\src\\com\\company\\unsorteddict.txt";
     static LinkedList<LinkedList> dict = new LinkedList<>();
     static String[] toPrint = new String[99171];
 
@@ -41,7 +41,6 @@ public class Main {
 
                 index++;
                 System.out.println(index);
-
             }
             long elapsedTime = (System.currentTimeMillis() - startingTime);
 
@@ -60,17 +59,17 @@ public class Main {
             System.out.println(elapsedTime);
 
             Scanner scan = new Scanner(System.in);
-            int x = scan.nextInt();
-
             for (int j = 0;j<10;j++) {
-                x = scan.nextInt();
-                if (toPrint[x]== null){
+                x = scan.nextLine();
+                if (toPrint[x] == null && toPrint.indexOf(x)){
                     System.out.println("-1");
-                }else {
+                }else if (x == (int)x){
                     System.out.println(toPrint[x]);
-                }
+                } else {
+                    toPrint.indexOf(x)
 
             }
+            scan.close();
 
 
         }
@@ -85,9 +84,11 @@ public class Main {
     public static int getPosition(String word, int indicator) {
         String temp = Character.toString(word.charAt(0));
         int index = dict.get(indicator).indexOf(temp);
-        if (index<0){
+
+        if (index < 0){
             index = 0;}
-        for(int j=index;j< dict.get(indicator).size();j++) {
+
+        for(int j = index; j < dict.get(indicator).size(); j++) {
             String word_2 = (String) dict.get(indicator).get(j);
             if (word.compareTo(word_2) < 0){
                 return j;
