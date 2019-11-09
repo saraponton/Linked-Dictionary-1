@@ -1,20 +1,15 @@
 package com.company;
-import javax.swing.*;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.LinkedList;
 
 public class Main {
     static String alphabet = "abcdefghijklmnopqrstuvwxyz";
-    static String path = "D:\\Linked-Dictionary-1\\src\\com\\company\\unsorteddict.txt";
-    static Path unsorted = Paths.get("com/company/unsorteddict.txt");
-    static Path sorted= Paths.get("sorted.txt");
+    static String path = "D:\\Workspace\\src\\com\\company\\unsorteddict.txt";
+    static String path2 = "D:\\Linked-Dictionary-1\\sorted.txt";
     static LinkedList<LinkedList> dict = new LinkedList<>();
     static File file = new File(path);
+    static File file2 = new File(path2);
 
 
     public static void main(String args[]) throws IOException {
@@ -33,6 +28,7 @@ public class Main {
         System.out.println("Writing the new sorted file took " + (endTimeWrite - startTimeWrite) + " milliseconds");
 
         console();
+
 
     }
 
@@ -94,90 +90,47 @@ public class Main {
        }
 
        public static void console() throws IOException {
+        System.out.println("Type -1 to carry out verification controls");
         Scanner scan = new Scanner (System.in);
         String s = scan.nextLine();
-        if(s == "-1"){
-        verification(sorted, unsorted);
-        }
 
+        verification();
        }
 
 
-       public static void verification(Path x, Path s) throws IOException {
-           byte[] f1 = Files.readAllBytes(x);
-           byte[] f2 = Files.readAllBytes(s);
-           if (f1.equals(f2)){
-               System.out.println("The files are equal");
+       public static void verification() throws IOException {
+
+           BufferedReader reader1 = new BufferedReader(new FileReader(file));
+           BufferedReader reader2 = new BufferedReader(new FileReader(file2));
+
+           boolean areEqual = true;
+           int lineNum = 1;
+
+           String line1 = reader1.readLine();
+           String line2 = reader2.readLine();
+
+           while(areEqual){
+               if (line1 == line2) {
+                   line1 = reader1.readLine();
+                   line2 = reader2.readLine();
+                   lineNum++;
+                   areEqual = true;
+                   if(lineNum==10000){
+                       System.out.println("Both files are equal");
+                       areEqual = false;
+                   }
+               }
+               else if(line1 != line2){
+                   System.out.println("Both files aren't equal");
+                   areEqual = false;
+               }
            }
-           else System.out.println("Files are not equal");
+
+
        }
-        /*
-        File file = new File(path);
 
-        try {
-
-            Scanner sc = new Scanner(file);
-            int index = 0;
-            long startingTime = System.currentTimeMillis();
-            while (sc.hasNextLine()) {
-                String i = sc.nextLine().toLowerCase();
-
-                int indicator = alphabet.indexOf(i.charAt(0));
-
-                int position = getPosition(i, indicator);
-                if(position != -1) {
-                    dict.get(indicator).add(position, i);
-                }
-                else {
-                    dict.get(indicator).add(i);
-                }
-
-
-                index++;
-                System.out.println(index);
-            }
-            long elapsedTime = (System.currentTimeMillis() - startingTime);
-
-            sc.close();
-            PrintWriter writer = new PrintWriter("sorteddict.txt","UTF-8");
-            int i =0;
-            for(LinkedList<String> element : dict){
-                for(String word: element){
-                    toPrint[i] = word;
-                    i++;
-                    writer.println(word);
-
-                }
-            }
-            writer.close();
-            System.out.println(elapsedTime);
-
-            Scanner scan = new Scanner(System.in);
-            for (int j = 0;j<10;j++) {
-                int x = scan.nextInt();
-                if (toPrint[x]== null){
-                }else {
-                    System.out.println(toPrint[x]);
-
-                }
-                }
-                scan.close();
-
-
-            }
-        catch (FileNotFoundException | UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-
-
-
-        }
- */
-
-
-
-
-
-
+       public static void checkWord(){
+        
+       }
 
     }
