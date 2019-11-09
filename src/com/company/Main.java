@@ -24,9 +24,7 @@ public class Main {
     }
 
 
-        /*for ( char letter : alphabet.toCharArray()){
-            dict.add(new LinkedList<String>());
-        }
+        /*
         File file = new File(path);
 
         try {
@@ -87,35 +85,26 @@ public class Main {
 
 
         }
-
-        public static int getPosition(String word, int indicator) {
-        String temp = Character.toString(word.charAt(0));
-        int index = dict.get(indicator).indexOf(temp);
-
-        if (index < 0){
-            index = 0;}
-
-        for(int j = index; j < dict.get(indicator).size(); j++) {
-            String word_2 = (String) dict.get(indicator).get(j);
-            if (word.compareTo(word_2) < 0){
-                return j;
-            }
-
-        }
-        return -1;
-    } */
+ */
 
        public static void sortFile(File x) {
            try {
                Scanner sc = new Scanner(x);
 
                while (sc.hasNextLine()){
-                   String word = sc.nextLine().toLowerCase();
-                   //compareWord(word, alphabet.indexOf(word.charAt(0)));
-                   dict.get(alphabet.indexOf(word.toLowerCase().replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "").charAt(0))).add(word);
+                   String word = sc.nextLine().toLowerCase().replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "");
+                   int indicator = alphabet.indexOf(word.charAt(0));
+                   int location = compareWord(word, indicator);
 
+                   if (location !=-1) {
 
-                   //get's the linked list inside dict that corresponds to the position of the index within the alphabet of the first character of the word
+                       dict.get(indicator).add(location, word); //se añade la palabra en la posicion en la que se compara con la otra y es más pequeña
+
+                   }
+                   else {
+                       dict.get(indicator).add(word); //se añade al final si la palabra es la más grande
+                   }
+
                }
 
            }
@@ -124,16 +113,29 @@ public class Main {
            }
        }
 
-      /* public static void compareWord(String word, int indicator){
+       public static int compareWord(String word, int indicator){
 
-           String first_letter = Character.toString(word.charAt(0));
-           int index = dict.get(indicator).indexOf(first_letter);
 
-           while(indicator<alphabet.length() && indicator > 0){
-               dict.get(indicator).add(word);
+           String temp = Character.toString(word.charAt(0));
+           int index = dict.get(indicator).indexOf(temp);
+
+           if (index < 0) {
+
+               index = 0;
+
            }
-           System.out.println(word + " " + indicator);
-       } */
+
+           for(int j = index; j < dict.get(indicator).size(); j++) {
+
+               String word2 = (String) dict.get(indicator).get(j);
+               if (word.compareTo(word2) < 0){
+                   return j;
+               }
+
+           }
+           return -1;
+
+       }
 
 
 
