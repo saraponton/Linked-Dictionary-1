@@ -8,20 +8,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    static String alphabet = "abcdefghijklmnopqrstuvwxyzé";
-    static String path = "D:\\Workspace\\src\\com\\company\\unsorteddict.txt";
+    static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+    static String path = "D:\\Workspace\\src\\com\\company\\test.txt";
     static LinkedList<LinkedList> dict = new LinkedList<>();
-    static char[] letters = new char[alphabet.length()];
     static File file = new File(path);
 
 
 
     public static void main(String args[])
     {
-        for(int i = 0; i < letters.length; i++){
+        for(int i = 0; i < alphabet.length(); i++){
             dict.add (new LinkedList<String>());
         }
-        readFile(file);
+        sortFile(file);
     }
 
 
@@ -106,19 +105,39 @@ public class Main {
         return -1;
     } */
 
-       public static void readFile(File x) {
+       public static void sortFile(File x) {
            try {
                Scanner sc = new Scanner(x);
 
-               while (sc.hasNextLine())
-                   System.out.println(sc.nextLine());
+               while (sc.hasNextLine()){
+                   String word = sc.nextLine().toLowerCase();
+                   //compareWord(word, alphabet.indexOf(word.charAt(0)));
+                   dict.get(alphabet.indexOf(word.toLowerCase().replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "").charAt(0))).add(word);
+
+
+                   //get's the linked list inside dict that corresponds to the position of the index within the alphabet of the first character of the word
+               }
+
            }
            catch (FileNotFoundException e) {
                e.printStackTrace();
            }
        }
 
-       
+      /* public static void compareWord(String word, int indicator){
+
+           String first_letter = Character.toString(word.charAt(0));
+           int index = dict.get(indicator).indexOf(first_letter);
+
+           while(indicator<alphabet.length() && indicator > 0){
+               dict.get(indicator).add(word);
+           }
+           System.out.println(word + " " + indicator);
+       } */
+
+
+
+
 
 
 
