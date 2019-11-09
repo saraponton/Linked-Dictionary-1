@@ -1,21 +1,31 @@
 package com.company;
+import javax.swing.*;
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    static String alphabet="abcdefghijklmnopqrstuvwxyzé";
+    static String alphabet = "abcdefghijklmnopqrstuvwxyzé";
     static String path = "D:\\Workspace\\src\\com\\company\\unsorteddict.txt";
     static LinkedList<LinkedList> dict = new LinkedList<>();
-    static String[] toPrint = new String[99171];
+    static char[] letters = new char[alphabet.length()];
+    static File file = new File(path);
 
 
 
     public static void main(String args[])
     {
-        for ( char letter : alphabet.toCharArray()){
+        for(int i = 0; i < letters.length; i++){
+            dict.add (new LinkedList<String>());
+        }
+        readFile(file);
+    }
+
+
+        /*for ( char letter : alphabet.toCharArray()){
             dict.add(new LinkedList<String>());
         }
         File file = new File(path);
@@ -60,7 +70,7 @@ public class Main {
 
             Scanner scan = new Scanner(System.in);
             for (int j = 0;j<10;j++) {
-                x = scan.nextInt();
+                int x = scan.nextInt();
                 if (toPrint[x]== null){
                 }else {
                     System.out.println(toPrint[x]);
@@ -94,7 +104,23 @@ public class Main {
 
         }
         return -1;
-    }
+    } */
+
+       public static void readFile(File x) {
+           try {
+               Scanner sc = new Scanner(x);
+
+               while (sc.hasNextLine())
+                   System.out.println(sc.nextLine());
+           }
+           catch (FileNotFoundException e) {
+               e.printStackTrace();
+           }
+       }
+
+       
+
+
 
 
     }
