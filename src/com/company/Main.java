@@ -1,13 +1,18 @@
 package com.company;
 import javax.swing.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLOutput;
 import java.util.*;
 import java.util.LinkedList;
 
 public class Main {
     static String alphabet = "abcdefghijklmnopqrstuvwxyz";
-    static String path = "D:\\Workspace\\src\\com\\company\\unsorteddict.txt";
+    static String path = "D:\\Linked-Dictionary-1\\src\\com\\company\\unsorteddict.txt";
+    static Path unsorted = Paths.get("com/company/unsorteddict.txt");
+    static Path sorted= Paths.get("sorted.txt");
     static LinkedList<LinkedList> dict = new LinkedList<>();
     static File file = new File(path);
 
@@ -27,6 +32,7 @@ public class Main {
         long endTimeWrite = System.currentTimeMillis();
         System.out.println("Writing the new sorted file took " + (endTimeWrite - startTimeWrite) + " milliseconds");
 
+        console();
 
     }
 
@@ -87,9 +93,23 @@ public class Main {
 
        }
 
-       public static void search(){
+       public static void console() throws IOException {
         Scanner scan = new Scanner (System.in);
+        String s = scan.nextLine();
+        if(s == "-1"){
+        verification(sorted, unsorted);
+        }
 
+       }
+
+
+       public static void verification(Path x, Path s) throws IOException {
+           byte[] f1 = Files.readAllBytes(x);
+           byte[] f2 = Files.readAllBytes(s);
+           if (f1.equals(f2)){
+               System.out.println("The files are equal");
+           }
+           else System.out.println("Files are not equal");
        }
         /*
         File file = new File(path);
