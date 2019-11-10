@@ -1,34 +1,62 @@
 package com.company;
 import java.io.*;
+import java.lang.reflect.Array;
+import java.text.Normalizer;
 import java.util.*;
 import java.util.LinkedList;
 
 public class Main {
     static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+
     static String path = "D:\\Linked-Dictionary-1\\src\\com\\company\\unsortedDictTest2.txt";
     static String path2 = "D:\\Linked-Dictionary-1\\src\\com\\company\\sortedDictTest2.txt";
     static String path3 = "D:\\Linked-Dictionary-1\\sorted2.txt";
+
     static LinkedList<LinkedList> dict = new LinkedList<>();
+
     static File file = new File(path);
     static File file2 = new File(path2);
     static File file3 = new File(path3);
 
 
     public static void main(String args[]) throws IOException {
-        long startTimeList = System.currentTimeMillis();
+
+        long[] timers = new long[3];
+
+        long startTimeCreateList = System.currentTimeMillis();
         createList();
-        long endTimeList = System.currentTimeMillis();
+        long endTimeCreateList = System.currentTimeMillis();
+        long createList = (endTimeCreateList - startTimeCreateList);
 
         long startTimeSort = System.currentTimeMillis();
         sortFile(file);
         long endTimeSort = System.currentTimeMillis();
-        System.out.println("Creating the list took:" + (endTimeList - startTimeList) + " milliseconds");
-        System.out.println("Sorting took " + (endTimeSort - startTimeSort) + " milliseconds");
+        long sortTime = (endTimeSort - startTimeSort);
+
+        System.out.println("Creating the list took: " + createList + " milliseconds");
+        System.out.println("Sorting took " + sortTime + " milliseconds");
 
         long startTimeWrite = System.currentTimeMillis();
         writeFile();
         long endTimeWrite = System.currentTimeMillis();
-        System.out.println("Writing the new sorted file took " + (endTimeWrite - startTimeWrite) + " milliseconds");
+        long timeWrite = endTimeWrite - startTimeWrite;
+        System.out.println("Writing the new sorted file took " + timeWrite + " milliseconds");
+
+        doAverage(createList, sortTime, timeWrite);
+
+        timers[0] = endTimeCreateList - startTimeCreateList;
+        timers[1] = endTimeSort - startTimeSort;
+        timers[2] = endTimeWrite - startTimeWrite;
+
+        double max = Double.MIN_VALUE;
+
+        for (int i = 0; i<timers.length; i++){
+            if(timers[i]>max){
+                max = timers[i];
+            }
+        }
+        System.out.println("The longest task took: "+max +" milliseconds");
+
 
         console();
     }
@@ -100,56 +128,91 @@ public class Main {
        }
 
        public static void console() throws IOException {
-        System.out.println("Type a number to carry out verification controls");
+        System.out.println("Type a number to carry out verification controls. -2 = exit. ");
+        boolean flag = true;
         Scanner scan = new Scanner (System.in);
-        while(!scan.hasNextInt()){
-            System.out.println("Please enter a valid number");
-            scan.next();
-        }
-        int number = scan.nextInt();
 
-        if (number == -1){
-            verification();
-        }
-        else if(number < -1){
-            System.out.println("Your number is too small");
-        }
-
-        else if (number > -1 && number <= 10000){
-
-             BufferedReader b1 = null;
-             BufferedReader b2 = null;
-             List<String> list_file1 = new ArrayList<String>();
-             List<String> list_file2 = new ArrayList<String>();
-            String lineText = null;
-
-            try {
-                b1 = new BufferedReader(new FileReader(file2));
-                while ((lineText = b1.readLine()) != null) {
-                    list_file1.add(lineText);
+        while (flag) {
+               while (!scan.hasNextInt()) {
+                   System.out.println("Please enter a valid number between -2 & 9457");
+                   scan.next();
+               }
+               int number = scan.nextInt();
+                if (number ==-2){
+                    flag = false;
                 }
-                b2 = new BufferedReader(new FileReader(file3));
-                while ((lineText = b2.readLine()) != null) {
-                    list_file2.add(lineText);
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+               if (number == -1) {
+                   verification();
+               } else if (number < -2 || number > 9457) {
+                   System.out.println("Your number is outside of range");
+               } else if (number > -1 && number <= 9457) {
 
-            if(list_file1.get(number).equalsIgnoreCase(list_file2.get(number))){
-                System.out.println("Words in position " +number +" match. The word is: "+ list_file1.get(number));
-            }
-        }
+                   BufferedReader b1 = null;
+                   BufferedReader b2 = null;
+                   List<String> list_file1 = new ArrayList<String>();
+                   List<String> list_file2 = new ArrayList<String>();
+                   String lineText = null;
 
+                   try {
+                       b1 = new BufferedReader(new FileReader(file2));
+                       while ((lineText = b1.readLine()) != null) {
+                           list_file1.add(lineText);
+                       }
+                       b2 = new BufferedReader(new FileReader(file3));
+                       while ((lineText = b2.readLine()) != null) {
+                           list_file2.add(lineText);
+                       }
+                   } catch (FileNotFoundException e) {
+                       e.printStackTrace();
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
 
+                   if (list_file1.get(number).equalsIgnoreCase(list_file2.get(number))) {
+                       System.out.println("Words in position " + number + " match. The word is: " + list_file1.get(number));
+                   }
+               }
+
+           }
        }
 
 
        public static void verification() throws IOException {
+           BufferedReader b1 = null;
+           BufferedReader b2 = null;
+           List<String> list_file1 = new ArrayList<String>();
+           List<String> list_file2 = new ArrayList<String>();
+           String lineText = null;
 
-           BufferedReader reader1 = new BufferedReader(new FileReader(file2));
+           try {
+               b1 = new BufferedReader(new FileReader(file2));
+               while ((lineText = b1.readLine()) != null) {
+                   String normalized_string = Normalizer.normalize(lineText, Normalizer.Form.NFD);
+                   list_file1.add(normalized_string.toLowerCase());
+               }
+               b2 = new BufferedReader(new FileReader(file3));
+               while ((lineText = b2.readLine()) != null) {
+                   String normalized_string = Normalizer.normalize(lineText, Normalizer.Form.NFD);
+                   list_file2.add(normalized_string.toLowerCase());
+               }
+           } catch (FileNotFoundException e) {
+               e.printStackTrace();
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+
+                   if(list_file1.equals(list_file2)){
+                       System.out.println("The files contain the same information ");
+
+                   }
+
+                   else{
+                       System.out.println("Content mismatch in both files");
+                   }
+
+
+
+           /*BufferedReader reader1 = new BufferedReader(new FileReader(file2));
            BufferedReader reader2 = new BufferedReader(new FileReader(file3));
 
            boolean areEqual = true;
@@ -177,11 +240,12 @@ public class Main {
                }
            }
 
-
+            */
        }
 
-       public static void checkWord(){
-
+       public static double doAverage(long a, long b, long c){
+        System.out.println("Average time of execution was: " +((a+b+c)/3) +" milliseconds");
+        return (a+b+c) / 3;
        }
 
     }
