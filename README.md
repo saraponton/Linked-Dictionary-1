@@ -3,7 +3,7 @@ Project by Yuval Cole and Sara Pontón.
 ## Objectives
 - [x] Make the previous project clean and faster.
 - [x] Find bottlenecks and look for a new solution to them.
-- [x] Use System.currentTimeMillis() to evaluate timing in different parts of your code and try to reduce them.  
+- [x] Use System.currentTimeMillis() to evaluate timing in different parts of the code and try to reduce them.  
 - [x] Use the testing theory learned in class to prove the code actually works. 
 
 ### Main Changes and New additions
