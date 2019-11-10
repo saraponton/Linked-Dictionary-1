@@ -64,6 +64,7 @@ public class Main {
        public static void createList(){
            for(int i = 0; i < alphabet.length(); i++){
                dict.add (new LinkedList<String>());
+               //crea una linked list del tamaño del abecedario con linked lists dentro donde ira cada palabra correspondiente al index de la letra
            }
        }
 
@@ -114,14 +115,15 @@ public class Main {
 
        public static void writeFile() throws IOException {
 
-           FileWriter fileWriter = new FileWriter("sorted2.txt");
+           FileWriter fileWriter = new FileWriter("sorted2.txt"); //clase filewriter para esribir el nuevo documento llamado "sorted2.txt"
 
            for(int i = 0; i<alphabet.length(); i++){
-               ListIterator iterator = dict.get(i).listIterator(0);
+               ListIterator iterator = dict.get(i).listIterator(0); //recorre la linked list interior de la letra con el iterator empezando
+               // desde cero para ir más rapido que con un for
 
                while(iterator.hasNext()){
                    fileWriter.append(iterator.next().toString());
-                   fileWriter.append("\n");
+                   fileWriter.append("\n"); //separa el contenido en lineas (creo que aqui puede estar el error de que no compare bien los 2 files
                }
            }
 
@@ -143,10 +145,14 @@ public class Main {
                 }
                if (number == -1) {
                    verification();
-               } else if (number < -2 || number > 9457) {
-                   System.out.println("Your number is outside of range");
-               } else if (number > -1 && number <= 9457) {
+               }
 
+               else if (number < -2 || number > 9457) {
+                   System.out.println("Your number is outside of range");
+               }
+
+               else if (number > -1 && number <= 9457) {
+                    //vamos a leer ambos files linea por linea guardando cada linea en un arraylist para luego poder comparar las palabras en cada posicion
                    BufferedReader b1 = null;
                    BufferedReader b2 = null;
                    List<String> list_file1 = new ArrayList<String>();
@@ -168,7 +174,7 @@ public class Main {
                        e.printStackTrace();
                    }
 
-                   if (list_file1.get(number).equalsIgnoreCase(list_file2.get(number))) {
+                   if (list_file1.get(number).equalsIgnoreCase(list_file2.get(number))) {   //aqui se compara
                        System.out.println("Words in position " + number + " match. The word is: " + list_file1.get(number));
                    }
                }
@@ -200,7 +206,7 @@ public class Main {
            } catch (IOException e) {
                e.printStackTrace();
            }
-
+//verifica si los arrays con la informacion de ambos documentos son iguales. Siempre sale content mismatch (puede ser por algun caracter especial)
                    if(list_file1.equals(list_file2)){
                        System.out.println("The files contain the same information ");
 
@@ -210,42 +216,12 @@ public class Main {
                        System.out.println("Content mismatch in both files");
                    }
 
-
-
-           /*BufferedReader reader1 = new BufferedReader(new FileReader(file2));
-           BufferedReader reader2 = new BufferedReader(new FileReader(file3));
-
-           boolean areEqual = true;
-           int lineNum = 1;
-
-           String line1 = reader1.readLine().replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "").toLowerCase();
-           String line2 = reader2.readLine().replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "").toLowerCase();
-
-           while(areEqual){
-               if (line1.replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "").toLowerCase() ==
-                       line2.replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "").toLowerCase()) {
-                   line1 = reader1.readLine();
-                   line2 = reader2.readLine();
-                   lineNum++;
-                   areEqual = true;
-                   if(lineNum==10000){
-                       System.out.println("Both files are equal");
-                       areEqual = false;
-                   }
-               }
-               else if(line1.replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "") !=
-                       line2.replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "")){
-                   System.out.println("Both files aren't equal");
-                   areEqual = false;
-               }
-           }
-
-            */
        }
 
        public static double doAverage(long a, long b, long c){
         System.out.println("Average time of execution was: " +((a+b+c)/3) +" milliseconds");
         return (a+b+c) / 3;
+        //calcula el average de 3 parametros pasados (serán los time taken en el main)
        }
 
     }
