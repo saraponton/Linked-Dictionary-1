@@ -1,6 +1,5 @@
 package com.company;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.text.Normalizer;
 import java.util.*;
 import java.util.LinkedList;
@@ -8,15 +7,15 @@ import java.util.LinkedList;
 public class Main {
     static String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
-    static String path = "D:\\Linked-Dictionary-1\\src\\com\\company\\unsortedDictTest2.txt";
-    static String path2 = "D:\\Linked-Dictionary-1\\src\\com\\company\\sortedDictTest2.txt";
-    static String path3 = "D:\\Linked-Dictionary-1\\sorted2.txt";
+    static String unsortedPath = "/Users/saraponton/git_lab/LinkedDictCodingPrinciples/src/com/company/unsortedDictTest2.txt";
+    static String alreadySortedPath = "/Users/saraponton/git_lab/LinkedDictCodingPrinciples/src/com/company/sortedDictTest2.txt";
+    static String newSortedPath = "/Users/saraponton/git_lab/LinkedDictCodingPrinciples/sorted2.txt";
 
     static LinkedList<LinkedList> dict = new LinkedList<>();
 
-    static File file = new File(path);
-    static File file2 = new File(path2);
-    static File file3 = new File(path3);
+    static File unsortedFile = new File(unsortedPath);
+    static File alreadySortedFile = new File(alreadySortedPath);
+    static File newSortedFile = new File(newSortedPath);
 
 
     public static void main(String args[]) throws IOException {
@@ -24,12 +23,12 @@ public class Main {
         long[] timers = new long[3];
 
         long startTimeCreateList = System.currentTimeMillis();
-        createList();
+        createLinkedLists();
         long endTimeCreateList = System.currentTimeMillis();
         long createList = (endTimeCreateList - startTimeCreateList);
 
         long startTimeSort = System.currentTimeMillis();
-        sortFile(file);
+        sortFile(unsortedFile);
         long endTimeSort = System.currentTimeMillis();
         long sortTime = (endTimeSort - startTimeSort);
 
@@ -37,7 +36,7 @@ public class Main {
         System.out.println("Sorting took " + sortTime + " milliseconds");
 
         long startTimeWrite = System.currentTimeMillis();
-        writeFile();
+        writeSortedFile();
         long endTimeWrite = System.currentTimeMillis();
         long timeWrite = endTimeWrite - startTimeWrite;
         System.out.println("Writing the new sorted file took " + timeWrite + " milliseconds");
@@ -48,34 +47,34 @@ public class Main {
         timers[1] = endTimeSort - startTimeSort;
         timers[2] = endTimeWrite - startTimeWrite;
 
-        double max = Double.MIN_VALUE;
+        double maxTime = Double.MIN_VALUE;
 
         for (int i = 0; i<timers.length; i++){
-            if(timers[i]>max){
-                max = timers[i];
+            if(timers[i]>maxTime){
+                maxTime = timers[i];
             }
         }
-        System.out.println("The longest task took: "+max +" milliseconds");
+        System.out.println("The longest task took: "+maxTime +" milliseconds");
 
 
         console();
     }
 
-       public static void createList(){
+       public static void createLinkedLists(){
            for(int i = 0; i < alphabet.length(); i++){
                dict.add (new LinkedList<String>());
                //crea una linked list del tamaño del abecedario con linked lists dentro donde ira cada palabra correspondiente al index de la letra
            }
        }
 
-       public static void sortFile(File x) {
+       public static void sortFile(File file) {
            try {
-               Scanner sc = new Scanner(x);
+               Scanner sc = new Scanner(file);
                int index = 0;
                while (sc.hasNextLine()){
                    String word = sc.nextLine().toLowerCase().replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "");
                    int indicator = alphabet.indexOf(word.charAt(0));
-                   int location = compareWord(word, indicator);
+                   int location = compareWordinPosition(word, indicator);
 
                    if (location !=-1) {
 
@@ -95,7 +94,7 @@ public class Main {
            }
        }
 
-       public static int compareWord(String word, int indicator){
+       public static int compareWordinPosition(String word, int indicator){
 
            ListIterator iterator = dict.get(indicator).listIterator(0); //usa clase list iterator ya que es mas rapida para comparar elementos que con un for loop
             int index = 0;
@@ -113,7 +112,7 @@ public class Main {
 
        }
 
-       public static void writeFile() throws IOException {
+       public static void writeSortedFile() throws IOException {
 
            FileWriter fileWriter = new FileWriter("sorted2.txt"); //clase filewriter para esribir el nuevo documento llamado "sorted2.txt"
 
@@ -133,25 +132,26 @@ public class Main {
         System.out.println("Type a number to carry out verification controls. -2 = exit. ");
         boolean flag = true;
         Scanner scan = new Scanner (System.in);
+        int linesinFile = countLinesinFile(unsortedFile);
 
         while (flag) {
                while (!scan.hasNextInt()) {
                    System.out.println("Please enter a valid number between -2 & 9457");
                    scan.next();
                }
-               int number = scan.nextInt();
-                if (number ==-2){
+               int inputNumber = scan.nextInt();
+                if (inputNumber ==-2){
                     flag = false;
                 }
-               if (number == -1) {
+               if (inputNumber == -1) {
                    verification();
                }
 
-               else if (number < -2 || number > 9457) {
+               else if (inputNumber < -2 || inputNumber > linesinFile) {
                    System.out.println("Your number is outside of range");
                }
 
-               else if (number > -1 && number <= 9457) {
+               else if (inputNumber > -1 && inputNumber <= 9457) {
                     //vamos a leer ambos files linea por linea guardando cada linea en un arraylist para luego poder comparar las palabras en cada posicion
                    BufferedReader b1 = null;
                    BufferedReader b2 = null;
@@ -160,11 +160,11 @@ public class Main {
                    String lineText = null;
 
                    try {
-                       b1 = new BufferedReader(new FileReader(file2));
+                       b1 = new BufferedReader(new FileReader(alreadySortedFile));
                        while ((lineText = b1.readLine()) != null) {
                            list_file1.add(lineText);
                        }
-                       b2 = new BufferedReader(new FileReader(file3));
+                       b2 = new BufferedReader(new FileReader(newSortedFile));
                        while ((lineText = b2.readLine()) != null) {
                            list_file2.add(lineText);
                        }
@@ -174,8 +174,8 @@ public class Main {
                        e.printStackTrace();
                    }
 
-                   if (list_file1.get(number).equalsIgnoreCase(list_file2.get(number))) {   //aqui se compara
-                       System.out.println("Words in position " + number + " match. The word is: " + list_file1.get(number));
+                   if (list_file1.get(inputNumber).equalsIgnoreCase(list_file2.get(inputNumber))) {   //aqui se compara
+                       System.out.println("Words in position " + inputNumber + " match. The word is: " + list_file1.get(inputNumber));
                    }
                }
 
@@ -191,12 +191,12 @@ public class Main {
            String lineText = null;
 
            try {
-               b1 = new BufferedReader(new FileReader(file2));
+               b1 = new BufferedReader(new FileReader(alreadySortedFile));
                while ((lineText = b1.readLine()) != null) {
                    String normalized_string = Normalizer.normalize(lineText, Normalizer.Form.NFD);
                    list_file1.add(normalized_string.toLowerCase());
                }
-               b2 = new BufferedReader(new FileReader(file3));
+               b2 = new BufferedReader(new FileReader(newSortedFile));
                while ((lineText = b2.readLine()) != null) {
                    String normalized_string = Normalizer.normalize(lineText, Normalizer.Form.NFD);
                    list_file2.add(normalized_string.toLowerCase());
@@ -224,4 +224,14 @@ public class Main {
         //calcula el average de 3 parametros pasados (serán los time taken en el main)
        }
 
+       public static int countLinesinFile(File file){
+           Scanner sc = new Scanner(unsortedPath);
+              int count = 0;
+                 while (sc.hasNextLine()) {
+                   count++;
+                   sc.nextLine();
+                 }
+                 return count;
+       }
     }
+
