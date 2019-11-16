@@ -63,7 +63,7 @@ public class Main {
        public static void createLinkedLists(){
            for(int i = 0; i < alphabet.length(); i++){
                dict.add (new LinkedList<String>());
-               //crea una linked list del tamaño del abecedario con linked lists dentro donde ira cada palabra correspondiente al index de la letra
+               //Creates a linked list with the same length of the alphabet. Inside that Linked List there will be other Linked Lists where where each word will be stored corresponding to the index of that word.
            }
        }
 
@@ -75,14 +75,14 @@ public class Main {
                    String word = sc.nextLine().toLowerCase().replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "");
                    int indicator = alphabet.indexOf(word.charAt(0));
                    int location = compareWordinPosition(word, indicator);
-
+                    //Each word will run through this code where it will be stored before the previous word if it's "smaller" or after if it's "bigger".
                    if (location !=-1) {
 
-                       dict.get(indicator).add(location, word); //se añade la palabra en la posicion en la que se compara con la otra y es más pequeña
+                       dict.get(indicator).add(location, word);
 
                    }
                    else {
-                       dict.get(indicator).add(word); //se añade al final si la palabra es la más grande
+                       dict.get(indicator).add(word);
                    }
                 index++;
                    System.out.println(index);
@@ -96,7 +96,7 @@ public class Main {
 
        public static int compareWordinPosition(String word, int indicator){
 
-           ListIterator iterator = dict.get(indicator).listIterator(0); //usa clase list iterator ya que es mas rapida para comparar elementos que con un for loop
+           ListIterator iterator = dict.get(indicator).listIterator(0); //We changed our code as we found out it is better to use a Class List Iterator than a for loop as it makes the program run much faster.
             int index = 0;
            while(iterator.hasNext()) {  //i tried an if and didn't found the error in like hours until I realized it was getting out after the first iteration because
                // if is a condition and not a loop so it doesn't work with iterations
@@ -112,31 +112,33 @@ public class Main {
 
        }
 
-       public static void writeSortedFile() throws IOException {
+       public static void writeSortedFile() throws IOException { //In this part of the code we used the FileWriter class to write the new document
+        // called sorted2.txt. Also, we changed the for loop for a ListIterator to make it faster. Finally, we separate the code so that each word will be printed in a different line.
 
-           FileWriter fileWriter = new FileWriter("sorted2.txt"); //clase filewriter para esribir el nuevo documento llamado "sorted2.txt"
+
+
+           FileWriter fileWriter = new FileWriter("sorted2.txt");
 
            for(int i = 0; i<alphabet.length(); i++){
-               ListIterator iterator = dict.get(i).listIterator(0); //recorre la linked list interior de la letra con el iterator empezando
-               // desde cero para ir más rapido que con un for
+               ListIterator iterator = dict.get(i).listIterator(0);
 
                while(iterator.hasNext()){
                    fileWriter.append(iterator.next().toString());
-                   fileWriter.append("\n"); //separa el contenido en lineas (creo que aqui puede estar el error de que no compare bien los 2 files
+                   fileWriter.append("\n");
                }
            }
 
        }
 
        public static void console() throws IOException {
-        System.out.println("Type a number to carry out verification controls. -2 = exit. ");
+        System.out.println("Type a number to carry out verification controls. To exit type -2 ");
         boolean flag = true;
         Scanner scan = new Scanner (System.in);
-        int linesinFile = countLinesinFile(unsortedFile);
+        int linesinFile = countLinesinFile();
 
         while (flag) {
                while (!scan.hasNextInt()) {
-                   System.out.println("Please enter a valid number between -2 & 9457");
+                   System.out.println("Please enter a valid number between -2 & " + linesinFile);
                    scan.next();
                }
                int inputNumber = scan.nextInt();
@@ -151,8 +153,8 @@ public class Main {
                    System.out.println("Your number is outside of range");
                }
 
-               else if (inputNumber > -1 && inputNumber <= 9457) {
-                    //vamos a leer ambos files linea por linea guardando cada linea en un arraylist para luego poder comparar las palabras en cada posicion
+               else if (inputNumber > -1 && inputNumber <= 9459) {
+                  // The program will read each line from both files and store each word in an arraylist. After, it will compare each word to the position they hold in that arraylist.
                    BufferedReader b1 = null;
                    BufferedReader b2 = null;
                    List<String> list_file1 = new ArrayList<String>();
@@ -174,7 +176,7 @@ public class Main {
                        e.printStackTrace();
                    }
 
-                   if (list_file1.get(inputNumber).equalsIgnoreCase(list_file2.get(inputNumber))) {   //aqui se compara
+                   if (list_file1.get(inputNumber).equalsIgnoreCase(list_file2.get(inputNumber))) {  //The program verifies if the information in both files is the same
                        System.out.println("Words in position " + inputNumber + " match. The word is: " + list_file1.get(inputNumber));
                    }
                }
@@ -206,7 +208,6 @@ public class Main {
            } catch (IOException e) {
                e.printStackTrace();
            }
-//verifica si los arrays con la informacion de ambos documentos son iguales. Siempre sale content mismatch (puede ser por algun caracter especial)
                    if(list_file1.equals(list_file2)){
                        System.out.println("The files contain the same information ");
 
@@ -221,17 +222,19 @@ public class Main {
        public static double doAverage(long a, long b, long c){
         System.out.println("Average time of execution was: " +((a+b+c)/3) +" milliseconds");
         return (a+b+c) / 3;
-        //calcula el average de 3 parametros pasados (serán los time taken en el main)
+        //Finally, the program calculates the average of the 3 parameters previously stored.
        }
 
-       public static int countLinesinFile(File file){
-           Scanner sc = new Scanner(unsortedPath);
-              int count = 0;
-                 while (sc.hasNextLine()) {
-                   count++;
-                   sc.nextLine();
-                 }
-                 return count;
-       }
+
+    public static int countLinesinFile() throws IOException {
+        try (Scanner scanner = new Scanner(new FileReader(unsortedPath))) {
+            int count = 0;
+            while (scanner.hasNextLine()) {
+                scanner.nextLine();
+                count++;
+            }
+            return(count);
+        }
+    }
     }
 
