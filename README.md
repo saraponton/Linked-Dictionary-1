@@ -62,8 +62,7 @@ For example :  "In this part of the code we used the FileWriter class to write t
                          
 ## Coding Principle 4: Single Responsibility Principle (SRP)
 
-
-
+Each method is doing one function and isn't doing more than one task. 
 
 ## Coding Principle 5: Don’t Repeat Yourself (DRY)
 To avoid repetition, we converted some numbers into int variables to input the variable instead of a number every time. 
