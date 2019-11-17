@@ -162,11 +162,11 @@ public class Main {
                    String lineText = null;
 
                    try {
-                       b1 = new BufferedReader(new FileReader(alreadySortedFile));
+                       b1 = new BufferedReader(new FileReader(newSortedFile));
                        while ((lineText = b1.readLine()) != null) {
                            list_file1.add(lineText);
                        }
-                       b2 = new BufferedReader(new FileReader(newSortedFile));
+                       b2 = new BufferedReader(new FileReader(alreadySortedFile));
                        while ((lineText = b2.readLine()) != null) {
                            list_file2.add(lineText);
                        }
@@ -234,7 +234,7 @@ public class Main {
 
     public static int countLinesinFile() throws IOException {
 
-        BufferedReader reader = new BufferedReader(new FileReader(newSortedFile));
+        BufferedReader reader = new BufferedReader(new FileReader(alreadySortedFile));
         int lines = 0;
         while (reader.readLine() != null) lines++;
         reader.close();
