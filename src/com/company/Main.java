@@ -153,7 +153,7 @@ public class Main {
                    System.out.println("Your number is outside of range");
                }
 
-               else if (inputNumber > -1 && inputNumber <= 9459) {
+               else if (inputNumber > -1 && inputNumber <= linesinFile) {
                   // The program will read each line from both files and store each word in an arraylist. After, it will compare each word to the position they hold in that arraylist.
                    BufferedReader b1 = null;
                    BufferedReader b2 = null;
@@ -185,39 +185,45 @@ public class Main {
        }
 
 
-       public static void verification() throws IOException {
-           BufferedReader b1 = null;
-           BufferedReader b2 = null;
-           List<String> list_file1 = new ArrayList<String>();
-           List<String> list_file2 = new ArrayList<String>();
-           String lineText = null;
+    public static void verification() throws IOException {
+        BufferedReader b1 = null;
+        BufferedReader b2 = null;
+        List<String> list_file1 = new ArrayList<String>();
+        List<String> list_file2 = new ArrayList<String>();
+        String lineText = null;
+        int count = 0;
+        boolean flag = true;
 
-           try {
-               b1 = new BufferedReader(new FileReader(alreadySortedFile));
-               while ((lineText = b1.readLine()) != null) {
-                   String normalized_string = Normalizer.normalize(lineText, Normalizer.Form.NFD);
-                   list_file1.add(normalized_string.toLowerCase());
-               }
-               b2 = new BufferedReader(new FileReader(newSortedFile));
-               while ((lineText = b2.readLine()) != null) {
-                   String normalized_string = Normalizer.normalize(lineText, Normalizer.Form.NFD);
-                   list_file2.add(normalized_string.toLowerCase());
-               }
-           } catch (FileNotFoundException e) {
-               e.printStackTrace();
-           } catch (IOException e) {
-               e.printStackTrace();
-           }
-                   if(list_file1.equals(list_file2)){
-                       System.out.println("The files contain the same information ");
+        try {
+            b1 = new BufferedReader(new FileReader(newSortedFile));
+            while ((lineText = b1.readLine()) != null) {
+                list_file1.add(lineText);
+            }
+            b2 = new BufferedReader(new FileReader(alreadySortedFile));
+            while ((lineText = b2.readLine()) != null) {
+                list_file2.add(lineText);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-                   }
+        while (flag) {
+            if(list_file1.get(count).equalsIgnoreCase(list_file2.get(count)) && count <= countLinesinFile()){
+                count++; //in 1 file tehre is less words than in the other
+                System.out.println(count);
+                System.out.println(countLinesinFile());
+            }
+            if(count == countLinesinFile()){
+                System.out.println("Both files contain the same words");
+                flag = false;
+            }
+        }
 
-                   else{
-                       System.out.println("Content mismatch in both files");
-                   }
+//verifica si los arrays con la informacion de ambos documentos son iguales. Siempre sale content mismatch (puede ser por algun caracter especial)
 
-       }
+    }
 
        public static double doAverage(long a, long b, long c){
         System.out.println("Average time of execution was: " +((a+b+c)/3) +" milliseconds");
@@ -227,14 +233,13 @@ public class Main {
 
 
     public static int countLinesinFile() throws IOException {
-        try (Scanner scanner = new Scanner(new FileReader(unsortedPath))) {
-            int count = 0;
-            while (scanner.hasNextLine()) {
-                scanner.nextLine();
-                count++;
-            }
-            return(count);
-        }
+
+        BufferedReader reader = new BufferedReader(new FileReader(newSortedFile));
+        int lines = 0;
+        while (reader.readLine() != null) lines++;
+        reader.close();
+        return lines;
     }
+
     }
 
