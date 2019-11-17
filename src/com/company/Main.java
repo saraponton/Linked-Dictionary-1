@@ -115,8 +115,6 @@ public class Main {
        public static void writeSortedFile() throws IOException { //In this part of the code we used the FileWriter class to write the new document
         // called sorted2.txt. Also, we changed the for loop for a ListIterator to make it faster. Finally, we separate the code so that each word will be printed in a different line.
 
-
-
            FileWriter fileWriter = new FileWriter("sorted2.txt");
 
            for(int i = 0; i<alphabet.length(); i++){
@@ -211,7 +209,7 @@ public class Main {
 
         while (flag) {
             if(list_file1.get(count).equalsIgnoreCase(list_file2.get(count)) && count <= countLinesinFile()){
-                count++; //in 1 file tehre is less words than in the other
+                count++; //in 1 file there are less words than in the other
                 System.out.println(count);
                 System.out.println(countLinesinFile());
             }
@@ -221,7 +219,6 @@ public class Main {
             }
         }
 
-//verifica si los arrays con la informacion de ambos documentos son iguales. Siempre sale content mismatch (puede ser por algun caracter especial)
 
     }
 

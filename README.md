@@ -1,147 +1,127 @@
 # Linked Dictionaries
 Project by Yuval Cole and Sara Pontón.
 ## Objectives
-- [x] Make the previous project clean and faster.
-- [x] Find bottlenecks and look for a new solution to them.
-- [x] Use System.currentTimeMillis() to evaluate timing in different parts of the code and try to reduce them.  
-- [x] Use the testing theory learned in class to prove the code actually works. 
+- [x] Follow the coding principles.
+- [x] Change our code to fit the principles.
+- [x] Make the code easier to understand and follow.
+- [x] Improve its funcionalities to make it easier and faster.
 
-### Main Changes and New additions
-## #1
-To improve the time the program took to store the different values in the Linked List we decided to create a Linked list with the same length as the alphabet. 
-Inside that Linked List there will be other Linked Lists where where each word will be stored corresponding to the index of that word. 
+### Main Coding Principles
+## Coding Principle 1: Meaningful names
+We changed and improved all the variable names in our code to make them more understandable. This way, you don't need to ask the previous coder or write comments in the code
+to explain what each variable stands for. We also used verbs to better explain the meaning of each method. 
+Some of the names we changed are: 
+- path → unsortedPath
+- path2 → alreadySortedPath
+- path3 → newSortedPath
+- file → unsortedFile
+- file2 → alreadySortedFile
+- file3 → newSortedFile
+- max → maxTime
+- createList → createLinkedLists
+- compareWord → compareWordinPosition
+- writeFile → writeSortedFile
+- number → inputNumber
+
+
+## Coding Principle 2: Keep functions small
+The smaller the functions are in your code the better you will be able to understand them. 
+Here are a few examples of our short functions: 
 
 ```java
-       public static void createList(){
-           for(int i = 0; i < alphabet.length(); i++){
-               dict.add (new LinkedList<String>());
-           }
-       }
+      public static void createLinkedLists(){
+                for(int i = 0; i < alphabet.length(); i++){
+                    dict.add (new LinkedList<String>());
+                    //Creates a linked list with the same length of the alphabet. Inside that Linked List there will be other Linked Lists where where each word will be stored corresponding to the index of that word.
+                }
+            }
 ```
 
-## #2
-Each word will run through this code where it will be stored before the previous word if it's  "smaller" or after if it's "bigger".
-
-```java
-       public static void sortFile(File x) {
-           try {
-               Scanner sc = new Scanner(x);
-               int index = 0;
-               while (sc.hasNextLine()){
-                   String word = sc.nextLine().toLowerCase().replaceAll("[^\\p{ASCII}]", "").replaceAll("\\p{M}", "");
-                   int indicator = alphabet.indexOf(word.charAt(0));
-                   int location = compareWord(word, indicator);
-
-                   if (location !=-1) {
-
-                       dict.get(indicator).add(location, word); 
-
-                   }
-                   else {
-                       dict.get(indicator).add(word);
-                   }
-                index++;
-                   System.out.println(index);
-               }
-
-           }
-           catch (FileNotFoundException e) {
-               e.printStackTrace();
-           }
-       }
-```
-
-## #3 
-We changed our code as we found out it is better to use a Class List Iterator than a for loop as it makes the program run much faster.
-```java
- public static int compareWord(String word, int indicator){
-
-           ListIterator iterator = dict.get(indicator).listIterator(0); 
-            int index = 0;
-           while(iterator.hasNext()) {  
-
-               String word2 = iterator.next().toString();
-               if (word.compareTo(word2) < 0){
-                   return index ;
-               }
-               index +=1;
-
-           }
-           return -1;
-
-       }
-```
-## #4 
-In this part of the code we used the FileWriter class to write the new document called sorted2.txt. Also, we changed the for loop for a ListIterator to make it faster. Finally, we separate the code so that each word will be printed in a different line. 
-```java
-public static void writeFile() throws IOException {
-                           
-    FileWriter fileWriter = new FileWriter("sorted2.txt"); 
-                          
-       for(int i = 0; i<alphabet.length(); i++){
-           ListIterator iterator = dict.get(i).listIterator(0); 
-                          
-             while(iterator.hasNext()){
-                 fileWriter.append(iterator.next().toString());
-                 fileWriter.append("\n"); 
-                                          }
-                                      }
-                           
-                                  }
-```
-
-## #5
-The program will read each line from both files and store each word in an arraylist. After, it will compare each word to the position they hold in that arraylist. 
-```java
- else if (number > -1 && number <= 9457) {
-                   BufferedReader b1 = null;
-                   BufferedReader b2 = null;
-                   List<String> list_file1 = new ArrayList<String>();
-                   List<String> list_file2 = new ArrayList<String>();
-                   String lineText = null;
-
-                   try {
-                       b1 = new BufferedReader(new FileReader(file2));
-                       while ((lineText = b1.readLine()) != null) {
-                           list_file1.add(lineText);
-                       }
-                       b2 = new BufferedReader(new FileReader(file3));
-                       while ((lineText = b2.readLine()) != null) {
-                           list_file2.add(lineText);
-                       }
-                   } catch (FileNotFoundException e) {
-                       e.printStackTrace();
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
-
-                   if (list_file1.get(number).equalsIgnoreCase(list_file2.get(number))) {  
-                       System.out.println("Words in position " + number + " match. The word is: " + list_file1.get(number));
-                   }
-               }
-```
-## #6
-Verifies if the information in both documents its the same.
 ````java
-if(list_file1.equals(list_file2)){
-    System.out.println("The files contain the same information ");
+public static void writeSortedFile() throws IOException { 
+           FileWriter fileWriter = new FileWriter("sorted2.txt");
 
-}
+           for(int i = 0; i<alphabet.length(); i++){
+               ListIterator iterator = dict.get(i).listIterator(0);
 
-else{
-    System.out.println("Content mismatch in both files");
-}
+               while(iterator.hasNext()){
+                   fileWriter.append(iterator.next().toString());
+                   fileWriter.append("\n");
+               }
+           }
 
+       }
+````
+## Coding Principle 3: Avoid redundant commenting 
+We changed our comments from Spanish to English so that everybody can understand. Moreover, we only left the comments that we 
+thought were more relevant to explain the code to someone with less coding knowledge. 
+
+For example :  "In this part of the code we used the FileWriter class to write the new document
+                      called sorted2.txt. Also, we changed the for loop for a ListIterator to make it faster. 
+                      Finally, we separate the code so that each word will be printed in a different line." 
+                         
+## Coding Principle 4: Single Responsibility Principle (SRP)
+
+
+
+
+## Coding Principle 5: Don’t Repeat Yourself (DRY)
+To avoid repetition, we converted some numbers into int variables to input the variable instead of a number every time. 
+
+For example we created a specific method to count the lines in each file and use that as a variable in our "console" method. 
+````java
+    public static int countLinesinFile() throws IOException {
+    BufferedReader reader = new BufferedReader(new FileReader(alreadySortedFile));
+        int lines = 0;
+        while (reader.readLine() != null) lines++;
+        reader.close();
+        return lines;
+    }
 ````
 
-## #7
-Finally, the program calculates the average of the 3 parameters previously stored. 
+## Coding Principle 6: Keep your code simple
+To keep the functionalities of our code simpler and faster, we made some changes to them.
+Some of the methods we added/changed are: countLinesinFile(), verification() and console() method. 
+Here is an example of our new verification method: 
 ````java
-public static double doAverage(long a, long b, long c){
-        System.out.println("Average time of execution was: " +((a+b+c)/3) +" milliseconds");
-        return (a+b+c) / 3;
-       }
-
-  
+ public static void verification() throws IOException {
+        BufferedReader b1 = null;
+        BufferedReader b2 = null;
+        List<String> list_file1 = new ArrayList<String>();
+        List<String> list_file2 = new ArrayList<String>();
+        String lineText = null;
+        int count = 0;
+        boolean flag = true;
+        try {
+            b1 = new BufferedReader(new FileReader(newSortedFile));
+            while ((lineText = b1.readLine()) != null) {
+                list_file1.add(lineText);
+            }
+            b2 = new BufferedReader(new FileReader(alreadySortedFile));
+            while ((lineText = b2.readLine()) != null) {
+                list_file2.add(lineText);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (flag) {
+            if(list_file1.get(count).equalsIgnoreCase(list_file2.get(count)) && count <= countLinesinFile()){
+                count++; 
+                System.out.println(count);
+                System.out.println(countLinesinFile());
+            }
+            if(count == countLinesinFile()){
+                System.out.println("Both files contain the same words");
+                flag = false;
+            }
+        }
+    }
 ````
+
+
+## Coding principle 7: YAGNI (You Ain’t Gonna Need It)
+We didn't find any method or variables in our code that were unused. We think each class, variable and method
+created has the appropriate information for our code to work. 
 
